@@ -1,38 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
-    <title>Los 15 de Luz</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Los 15 de Luz</title>
+  <style>
+    /* Estilo para el popup flotante */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-family: sans-serif;
+      font-size: 16px;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <h1>Los 15 de Luz</h1>
-    <img class="logo" src="./img/15.jpg" alt="">
-    <form id="uploadForm" enctype="multipart/form-data">
-  <input class="input" type="file" name="photo" id="photoInput" accept="image/*" /><br>
-  <button class="boton" type="submit">Subir Foto</button>
-</form>
+  <h1>Los 15 de Luz</h1>
+  <img class="logo" src="./img/15.jpg" alt="Logo">
 
-<script>
-document.getElementById('uploadForm').addEventListener('submit', async function (e) {
-  e.preventDefault();
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input class="input" type="file" name="photo" id="photoInput" accept="image/*" /><br>
+    <button class="boton" type="submit">Subir Foto</button>
+  </form>
 
-  const fileInput = document.getElementById('photoInput');
-  if (!fileInput.files.length) return alert("Seleccioná una Foto.");
+  <!-- Popup de confirmación -->
+  <div id="popup">✅ Imagen subida correctamente</div>
 
-  const formData = new FormData();
-  formData.append('photo', fileInput.files[0]);
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
 
-  const response = await fetch('https://soloprogramming.com.ar/upload.php', {
-    method: 'POST',
-    body: formData,
-  });
+      const fileInput = document.getElementById('photoInput');
+      if (!fileInput.files.length) return alert("Seleccioná una foto.");
 
-  const result = await response.text();
-  alert(result);
-});
-</script>
+      const formData = new FormData();
+      formData.append('photo', fileInput.files[0]);
 
+      try {
+        const response = await fetch('https://soloprogramming.com.ar/upload.php', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.text();
+
+        if (response.ok && result.toLowerCase().includes("subida")) {
+          const popup = document.getElementById('popup');
+          popup.style.display = 'block';
+
+          setTimeout(() => {
+            popup.style.display = 'none';
+            location.reload();
+          }, 3000);
+        } else {
+          alert("❌ Error: " + result);
+        }
+      } catch (error) {
+        alert("❌ Hubo un problema al subir la imagen.");
+      }
+    });
+  </script>
 </body>
 </html>
