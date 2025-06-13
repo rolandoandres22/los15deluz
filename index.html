@@ -57,9 +57,9 @@
           body: formData,
         });
 
-        const result = await response.text();
+        const result = await response.json();
 
-        if (response.ok && result.toLowerCase().includes("subida")) {
+        if (response.ok && result.success) {
           const popup = document.getElementById('popup');
           popup.style.display = 'block';
 
@@ -68,10 +68,10 @@
             location.reload();
           }, 3000);
         } else {
-          alert("❌ Error: " + result);
+          alert("❌ Error: " + result.message);
         }
       } catch (error) {
-        alert("❌ Hubo un problema al subir la imagen.");
+        alert("❌ Hubo un problema al subir la imagen: " + error.message);
       }
     });
   </script>
