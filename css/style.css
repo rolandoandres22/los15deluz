@@ -1,0 +1,25 @@
+*{
+text-align: center;
+
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+h1{
+    padding: 50px;
+}
+.logo{
+border-radius: 50%;
+width: 350px;
+height: 350px;
+margin-bottom: 50px;
+}
+
+.input{
+    padding: 20px;
+    padding-bottom: 40px;
+}
+.boton{
+    padding: 20px;
+    width: 80%;
+}
