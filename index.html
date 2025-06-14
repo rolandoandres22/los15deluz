@@ -2,13 +2,14 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css">
   <title>Los 15 de Luz</title>
   <style>
+    /* Estilos existentes... */
     #popup {
       display: none;
       position: fixed;
@@ -78,14 +79,68 @@
         transform: translateY(100vh) rotate(720deg);
       }
     }
+    
+    /* Nuevos estilos para la cámara */
+    .camera-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .camera-btn {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .camera-btn i {
+      font-size: 20px;
+    }
+    
+    .preview-container {
+      display: none;
+      margin: 15px 0;
+      text-align: center;
+    }
+    
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+    }
   </style>
+  <!-- Iconos para los botones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <h1>Los 15 de Luz</h1>
   <img class="logo" src="./img/15.jpg" alt="Logo">
 
   <form id="uploadForm" enctype="multipart/form-data">
-    <input class="input" type="file" name="photo" id="photoInput" accept="image/*" required><br>
+    <div class="camera-options">
+      <button type="button" class="camera-btn" id="openCamera">
+        <i class="fas fa-camera"></i> Tomar Foto
+      </button>
+      <button type="button" class="camera-btn" id="openGallery">
+        <i class="fas fa-images"></i> Elegir de Galería
+      </button>
+    </div>
+    
+    <div class="preview-container" id="previewContainer">
+      <img id="imagePreview" src="#" alt="Vista previa">
+      <p>Foto seleccionada</p>
+    </div>
+    
+    <input class="input" type="file" name="photo" id="photoInput" accept="image/*" capture="environment" style="display: none;">
     <button class="boton" type="submit">Subir Foto</button>
   </form>
 
@@ -94,9 +149,46 @@
   <div class="loading">⏳ Enviando tu foto...</div>
 
   <script>
+    // Elementos del DOM
+    const photoInput = document.getElementById('photoInput');
+    const openCamera = document.getElementById('openCamera');
+    const openGallery = document.getElementById('openGallery');
+    const previewContainer = document.getElementById('previewContainer');
+    const imagePreview = document.getElementById('imagePreview');
+    
     // Limpiar el input al cargar la página
     window.addEventListener('load', function() {
-      document.getElementById('photoInput').value = '';
+      photoInput.value = '';
+    });
+
+    // Función para mostrar vista previa
+    function showPreview(file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        previewContainer.style.display = 'block';
+      }
+      reader.readAsDataURL(file);
+    }
+    
+    // Abrir cámara
+    openCamera.addEventListener('click', function() {
+      photoInput.removeAttribute('capture');
+      photoInput.setAttribute('capture', 'environment');
+      photoInput.click();
+    });
+    
+    // Abrir galería
+    openGallery.addEventListener('click', function() {
+      photoInput.removeAttribute('capture');
+      photoInput.click();
+    });
+    
+    // Cuando se selecciona una imagen
+    photoInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+        showPreview(this.files[0]);
+      }
     });
 
     // Función para crear confeti
@@ -121,13 +213,12 @@
       }
     }
 
+    // Manejar envío del formulario
     document.getElementById('uploadForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const fileInput = document.getElementById('photoInput');
-      
       // Verificar que haya una imagen seleccionada
-      if (!fileInput.files.length) {
+      if (!photoInput.files.length) {
         showError("Por favor selecciona una imagen");
         return;
       }
@@ -137,7 +228,7 @@
       
       try {
         const formData = new FormData();
-        formData.append('photo', fileInput.files[0]);
+        formData.append('photo', photoInput.files[0]);
         
         // Configurar timeout de 30 segundos
         const controller = new AbortController();
@@ -161,7 +252,7 @@
           throw new Error('La imagen no se guardó correctamente');
         }
         
-        // Mostrar éxito
+        // Mostrar éxito y recargar después
         document.querySelector('.loading').style.display = 'none';
         showSuccess();
         
@@ -177,6 +268,7 @@
       popup.style.display = 'block';
       createConfetti();
       
+      // Recargar solo después de mostrar el popup por 2 segundos
       setTimeout(() => {
         popup.style.display = 'none';
         location.reload();
