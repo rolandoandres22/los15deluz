@@ -6,7 +6,6 @@
   <link rel="stylesheet" href="./css/style.css">
   <title>Los 15 de Luz</title>
   <style>
-    /* Estilo para el popup flotante */
     #popup {
       display: none;
       position: fixed;
@@ -22,7 +21,6 @@
       z-index: 9999;
       animation: fadeIn 0.3s ease-in-out;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -34,45 +32,41 @@
   <img class="logo" src="./img/15.jpg" alt="Logo">
 
   <form id="uploadForm" enctype="multipart/form-data">
-    <input class="input" type="file" name="photo" id="photoInput" accept="image/*" /><br>
+    <input class="input" type="file" name="photo" id="photoInput" accept="image/*" required><br>
     <button class="boton" type="submit">Subir Foto</button>
   </form>
 
-  <!-- Popup de confirmación -->
-  <div id="popup">✅ Imagen subida correctamente</div>
+  <div id="popup">✅ Imagen enviada correctamente</div>
 
   <script>
-    document.getElementById('uploadForm').addEventListener('submit', function (e) {
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
       e.preventDefault();
-
+      
       const fileInput = document.getElementById('photoInput');
+      
+      // Única verificación: que haya una imagen seleccionada
       if (!fileInput.files.length) {
-        alert("Seleccioná una foto.");
+        alert("Por favor selecciona una imagen");
         return;
       }
-
-      const formData = new FormData();
-      formData.append('photo', fileInput.files[0]);
-
-      // Mostrar popup de éxito inmediatamente
-      const popup = document.getElementById('popup');
-      popup.style.display = 'block';
-
-      // Enviar la imagen sin esperar respuesta
+      
+      // Enviar la imagen (sin esperar respuesta)
+      const formData = new FormData(this);
       fetch('https://soloprogramming.com.ar/upload.php', {
         method: 'POST',
-        body: formData,
-        mode: 'no-cors' // Modo no-cors para evitar problemas
-      }).catch(error => {
-        console.error('Error en la subida:', error);
-        // No mostramos error al usuario para simplificar
+        body: formData
       });
-
-      // Recargar la página después de 3 segundos
+      
+      // Esperar 2 segundos antes de mostrar el popup
       setTimeout(() => {
-        popup.style.display = 'none';
-        location.reload();
-      }, 3000);
+        const popup = document.getElementById('popup');
+        popup.style.display = 'block';
+        
+        // Recargar después de otros 2 segundos (4 segundos total)
+        setTimeout(() => {
+          location.reload();
+        }, 2000);
+      }, 2000);
     });
   </script>
 </body>
