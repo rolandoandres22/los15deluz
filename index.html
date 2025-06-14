@@ -39,6 +39,11 @@
   <div id="popup">✅ Imagen enviada correctamente</div>
 
   <script>
+    // Limpiar el input al cargar la página
+    window.addEventListener('load', function() {
+      document.getElementById('photoInput').value = '';
+    });
+
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
       e.preventDefault();
       
