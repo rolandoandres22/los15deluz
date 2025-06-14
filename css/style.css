@@ -8,7 +8,8 @@ box-sizing: border-box;
 h1{
     padding: 50px 50px 20px 50px;
       font-family: "Satisfy", cursive;
-font-size: 55px;
+font-size: 45px;
+
 }
 .logo{
 border-radius: 50%;
@@ -113,6 +114,7 @@ border-radius: 5px;
       gap: 10px;
       margin-bottom: 15px;
       align-items: center;
+      
     }
     
     .camera-btn {
@@ -121,13 +123,14 @@ border-radius: 5px;
       border: 2px solid black;
       padding: 12px 20px;
       border-radius: 5px;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      width: 200px;
+      width: 220px;
+      font-family: "Satisfy", cursive;
     }
     
     .camera-btn i {
