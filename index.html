@@ -9,21 +9,40 @@
     #popup {
       display: none;
       position: fixed;
-      top: 20px;
-      right: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #4caf50;
       color: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      padding: 25px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
       font-family: sans-serif;
-      font-size: 16px;
-      z-index: 9999;
-      animation: fadeIn 0.3s ease-in-out;
+      font-size: 20px;
+      z-index: 100;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
     }
+    
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      opacity: 0.8;
+      z-index: 99;
+      animation: fall linear forwards;
+    }
+    
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+      }
     }
   </style>
 </head>
@@ -43,6 +62,29 @@
     window.addEventListener('load', function() {
       document.getElementById('photoInput').value = '';
     });
+
+    // Función para crear confeti
+    function createConfetti() {
+      const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+      const container = document.body;
+      
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = -10 + 'px';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.height = Math.random() * 10 + 5 + 'px';
+        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+        container.appendChild(confetti);
+        
+        // Eliminar el confeti después de la animación
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
 
     document.getElementById('uploadForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -66,6 +108,7 @@
       setTimeout(() => {
         const popup = document.getElementById('popup');
         popup.style.display = 'block';
+        createConfetti(); // Activar el efecto de confeti
         
         // Recargar después de otros 2 segundos (4 segundos total)
         setTimeout(() => {
