@@ -187,15 +187,14 @@
       galleryModal.style.display = 'flex';
       galleryGrid.innerHTML = 'Cargando imágenes...';
       try {
-        const response = await fetch('https://soloprogramming.com.ar/uploads/');
+        const response = await fetch('https://soloprogramming.com.ar/lista.php');
         const text = await response.text();
-        const matches = [...text.matchAll(/href="(.*?\.(jpg|jpeg|png|gif))"/gi)];
-        if (matches.length === 0) return galleryGrid.innerHTML = 'No se encontraron imágenes.';
+        const imageList = await response.json();
+        if (imageList.length === 0) return galleryGrid.innerHTML = 'No se encontraron imágenes.';
         galleryGrid.innerHTML = '';
-        matches.forEach(match => {
-          const imgURL = `https://soloprogramming.com.ar/uploads/${match[1]}`;
+        imageList.forEach(url => {
           const img = document.createElement('img');
-          img.src = imgURL;
+          img.src = 'https://soloprogramming.com.ar/' + url;
           galleryGrid.appendChild(img);
         });
       } catch (error) {
