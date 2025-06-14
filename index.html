@@ -195,6 +195,7 @@
         imageList.forEach(url => {
           const img = document.createElement('img');
           img.src = 'https://soloprogramming.com.ar/' + url;
+          img.onerror = () => img.style.display = 'none';
           galleryGrid.appendChild(img);
         });
       } catch (error) {
