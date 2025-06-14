@@ -6,7 +6,7 @@ padding: 0;
 box-sizing: border-box;
 }
 h1{
-    padding: 50px 50px 30px 50px;
+    padding: 50px 50px 20px 50px;
       font-family: "Satisfy", cursive;
 font-size: 55px;
 }
@@ -14,12 +14,12 @@ font-size: 55px;
 border-radius: 50%;
 width: 350px;
 height: 350px;
-margin-bottom: 40px;
+margin-bottom: 30px;
 }
 
 .input{
     padding: 20px;
-    padding-bottom: 40px;
+    padding-bottom: 30px;
 }
 .boton{
     padding: 18px;
@@ -35,3 +35,113 @@ border-radius: 5px;
   font-weight: 400;
   font-style: normal;
 }
+/* Estilos existentes... */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #4caf50;
+      color: white;
+      padding: 25px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-family: sans-serif;
+      font-size: 20px;
+      z-index: 100;
+      text-align: center;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    
+    #errorPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #f44336;
+      color: white;
+      padding: 25px 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      font-family: sans-serif;
+      font-size: 20px;
+      z-index: 100;
+      text-align: center;
+    }
+    
+    .loading {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      font-size: 20px;
+      color: #333;
+      background: rgba(255,255,255,0.9);
+      padding: 20px;
+      border-radius: 10px;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+    
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background-color: #f00;
+      opacity: 0.8;
+      z-index: 99;
+      animation: fall linear forwards;
+    }
+    
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(720deg);
+      }
+    }
+    
+    /* Nuevos estilos para la cámara */
+    .camera-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 15px;
+      align-items: center;
+    }
+    
+    .camera-btn {
+      background-color: rgb(232, 231, 231);
+      color: black;
+      border: 2px solid black;
+      padding: 12px 20px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 200px;
+    }
+    
+    .camera-btn i {
+      font-size: 20px;
+    }
+    
+    .preview-container {
+      display: none;
+      margin: 15px 0;
+      text-align: center;
+    }
+    
+    #imagePreview {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+    }
